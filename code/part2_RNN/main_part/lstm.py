@@ -15,7 +15,7 @@ import torch.nn as nn
 class LSTM(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, num_classes):
       """
-      Initializes LSTM_MNIST object. 
+      Initializes LSTM object. 
 
       Args:
         input_size: size of input vector.
