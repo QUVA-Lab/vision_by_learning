@@ -21,9 +21,9 @@ from __future__ import print_function
 import argparse
 import time
 from datetime import datetime
+import numpy as np
 
 import torch
-import torch.optim as optim
 from torch.utils.data import DataLoader
 
 from part1.dataset import PalindromeDataset
@@ -42,54 +42,23 @@ def train(config):
     # Initialize the device which to run the model on
     device = torch.device(config.device)
 
-    # Setup the model that we are going to use
-    if config.model_type == 'RNN':
-
-        print("Initializing Vanilla RNN model...")
-        model = VanillaRNN(
-                seq_length=config.input_length,
-            input_dim=config.input_dim,
-            num_hidden=config.num_hidden,
-            num_classes=config.num_classes,
-            batch_size=config.batch_size,
-            device=device
-        )
-
-    else:
-
-        print("Initializing LSTM model...")
-        model = LSTM(
-            config.input_length, config.input_dim, config.num_hidden,
-            config.num_classes, config.batch_size
-        )
+    # Initialize the model that we are going to use
+    model = None  # fixme
 
     # Initialize the dataset and data loader (note the +1)
     dataset = PalindromeDataset(config.input_length+1)
     data_loader = DataLoader(dataset, config.batch_size, num_workers=1)
 
     # Setup the loss and optimizer
-    loss_function = torch.nn.NLLLoss()
-    optimizer = optim.RMSprop(model.parameters(), lr=config.learning_rate)
+    criterion = None  # fixme
+    optimizer = None  # fixme
 
     for step, (batch_inputs, batch_targets) in enumerate(data_loader):
 
         # Only for time measurement of step through network
         t1 = time.time()
 
-        # Move to GPU
-        batch_inputs  = batch_inputs.unsqueeze(-1)  # add input dimensionality
-        batch_inputs  = batch_inputs.to(device)     # [batch_size, seq_length, 1]
-        batch_targets = batch_targets.to(device)    # [batch_size]
-
-        # Reset for next iteration
-        model.zero_grad()
-
-        # Forward pass
-        log_probs = model(batch_inputs)
-
-        # Compute the loss, gradients and update network parameters
-        loss = loss_function(log_probs, batch_targets)
-        loss.backward()
+        # Add more code here ...
 
         ############################################################################
         # QUESTION: what happens here and why?
@@ -97,11 +66,10 @@ def train(config):
         torch.nn.utils.clip_grad_norm(model.parameters(), max_norm=config.max_norm)
         ############################################################################
 
-        optimizer.step()
+        # Add more code here ...
 
-        predictions = torch.argmax(log_probs, dim=1)
-        correct = (predictions == batch_targets).sum().item()
-        accuracy = correct / log_probs.size(0)
+        loss = np.inf   # fixme
+        accuracy = 0.0  # fixme
 
         # Just for time measurement
         t2 = time.time()
@@ -116,7 +84,6 @@ def train(config):
                     accuracy, loss
             ))
 
-        # Check if training is finished
         if step == config.train_steps:
             # If you receive a PyTorch data-loader error, check this bug report:
             # https://github.com/pytorch/pytorch/pull/9655
@@ -139,24 +106,13 @@ if __name__ == "__main__":
     parser.add_argument('--input_dim', type=int, default=1, help='Dimensionality of input sequence')
     parser.add_argument('--num_classes', type=int, default=10, help='Dimensionality of output sequence')
     parser.add_argument('--num_hidden', type=int, default=128, help='Number of hidden units in the model')
-
-    # Training params
     parser.add_argument('--batch_size', type=int, default=128, help='Number of examples to process in a batch')
     parser.add_argument('--learning_rate', type=float, default=0.001, help='Learning rate')
     parser.add_argument('--train_steps', type=int, default=10000, help='Number of training steps')
     parser.add_argument('--max_norm', type=float, default=10.0)
-
-    # Misc params
     parser.add_argument('--device', type=str, default="cuda:0", help="Training device 'cpu' or 'cuda:0'")
-    parser.add_argument('--gpu_mem_frac', type=float, default=0.5, help='Fraction of GPU memory to allocate')
-    parser.add_argument('--log_device_placement', type=bool, default=False, help='Log device placement for debugging')
-    parser.add_argument('--summary_path', type=str, default="./summaries/", help='Output path for summaries')
 
     config = parser.parse_args()
 
     # Train the model
     train(config)
-
-
-
-
