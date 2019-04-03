@@ -1,10 +1,15 @@
-import torch 
-import torch.nn as nn
-import torchvision
-import torchvision.transforms as transforms
 
-# Device configuration
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+"""
+This module implements an LSTM in PyTorch.
+You should fill in code into indicated sections.
+"""
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import torch
+import torch.nn as nn
 
 # Recurrent neural network (many-to-one)
 class LSTM_MNIST(nn.Module):
