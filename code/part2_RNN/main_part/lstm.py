@@ -1,18 +1,8 @@
-################################################################################
-# MIT License
-#
-# Copyright (c) 2018
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to conditions.
-#
-# Author: Deep Learning Course | Fall 2018
-# Date Created: 2018-09-04
-################################################################################
+
+"""
+This module implements an LSTM in PyTorch.
+You should fill in code into indicated sections.
+"""
 
 from __future__ import absolute_import
 from __future__ import division
@@ -21,14 +11,55 @@ from __future__ import print_function
 import torch
 import torch.nn as nn
 
-################################################################################
-
+# Recurrent neural network (many-to-one)
 class LSTM(nn.Module):
+    def __init__(self, input_size, hidden_size, num_layers, num_classes):
+      """
+      Initializes LSTM_MNIST object. 
 
-    def __init__(self, seq_length, input_dim, num_hidden, num_classes, batch_size, device='cpu'):
-        super(LSTM, self).__init__()
-        # Initialization here ...
+      Args:
+        input_size: size of input vector.
+        hidden_size: size of the hidden state.
+        num_layers: how many layers for hidden or cell states.
+        num_classes: number of output classes.
 
+      TODO:
+      Implement initialization of the network.
+      """
+    
+      super(LSTM, self).__init__()
+      
+      ########################
+      # PUT YOUR CODE HERE  #
+      #######################
+      raise NotImplementedError
+      ########################
+      # END OF YOUR CODE    #
+      #######################
+    
     def forward(self, x):
-        # Implementation here ...
-        pass
+      """
+      Performs forward pass of the input. Here an input tensor x.
+      You are expected to do 3 steps:
+       - set initial hidden and cell states 
+       - forward propagate LSTM
+       - decode the hidden state of the last time step
+
+      Args:
+        x: input to the network
+      Returns:
+        out: outputs of the network
+
+      TODO:
+      Implement forward pass of the network.
+      """
+
+      ########################
+      # PUT YOUR CODE HERE  #
+      #######################
+      raise NotImplementedError
+      ########################
+      # END OF YOUR CODE    #
+      #######################
+        
+      return out
